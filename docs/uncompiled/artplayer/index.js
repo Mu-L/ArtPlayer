@@ -153,7 +153,7 @@ var Artplayer = (function() {
   }
   var optionValidatorExports = requireOptionValidator();
   const validator = /* @__PURE__ */ getDefaultExportFromCjs(optionValidatorExports);
-  const version$1 = "5.3.1";
+  const version$1 = "5.4.0";
   const config$1 = {
     properties: [
       "audioTracks",

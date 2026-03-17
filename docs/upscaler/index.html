@@ -332,7 +332,6 @@
                                 <video
                                     id="resultVideoEnhanced"
                                     class="comparison-img enhanced block w-full h-auto bg-slate-900"
-                                    controls
                                     loop
                                     muted
                                     playsinline
@@ -400,6 +399,21 @@
                                         Upscaled
                                     </div>
                                 </div>
+
+                                <!-- Play/Pause Button -->
+                                <button
+                                    id="comparisonPlayPauseBtn"
+                                    onclick="toggleComparisonPlayPause(event)"
+                                    class="absolute bottom-3 left-3 w-9 h-9 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all z-20"
+                                    title="Play/Pause"
+                                >
+                                    <svg id="comparisonPlayIcon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                    <svg id="comparisonPauseIcon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
 
@@ -1185,6 +1199,46 @@
             }
 
             console.log("Upscaler ready:", Upscaler.getBackendType());
+
+            // Comparison video controls
+            function toggleComparisonPlayPause(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const enhancedVideo = document.getElementById('resultVideoEnhanced');
+                const originalVideo = document.getElementById('resultVideoOriginal');
+                const playIcon = document.getElementById('comparisonPlayIcon');
+                const pauseIcon = document.getElementById('comparisonPauseIcon');
+                if (!enhancedVideo || !originalVideo) return;
+
+                if (enhancedVideo.paused) {
+                    enhancedVideo.play();
+                    originalVideo.play();
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                } else {
+                    enhancedVideo.pause();
+                    originalVideo.pause();
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            }
+
+            // Update play/pause icon when video state changes
+            (function initComparisonVideoEvents() {
+                const enhancedVideo = document.getElementById('resultVideoEnhanced');
+                const playIcon = document.getElementById('comparisonPlayIcon');
+                const pauseIcon = document.getElementById('comparisonPauseIcon');
+                if (!enhancedVideo || !playIcon || !pauseIcon) return;
+
+                enhancedVideo.addEventListener('play', () => {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+                enhancedVideo.addEventListener('pause', () => {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                });
+            })();
         </script>
     </body>
 </html>
