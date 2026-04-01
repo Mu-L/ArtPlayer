@@ -1201,7 +1201,7 @@ ${line.text}`;
   }
   function setCurrentTime(art, event) {
     if (art.isRotate) {
-      const percentage = event.touches[0].clientY / art.height;
+      const percentage = (event.touches[0].clientY - art.top) / art.height;
       const second = percentage * art.duration;
       art.emit("setBar", "played", percentage, event);
       art.seek = second;
