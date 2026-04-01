@@ -32,6 +32,7 @@ export interface Utils {
   tooltip: (target: HTMLElement, msg: string, pos?: string) => void
   isInViewport: (target: HTMLElement, offset?: number) => boolean
   includeFromEvent: (event: Event, target: HTMLElement) => boolean
+  getSafeAreaInsets: () => { top: number, right: number, bottom: number, left: number }
 
   srtToVtt: (srtText: string) => string
   vttToBlob: (vttText: string) => string

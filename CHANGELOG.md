@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+- Fix safe area issue when enter web fullscreen [#1033](https://github.com/zhw2590582/ArtPlayer/issues/1033)
+
 ## [5.4.0] - 2026-03-12
 
 - Refactor `Parcel` to `Vite`

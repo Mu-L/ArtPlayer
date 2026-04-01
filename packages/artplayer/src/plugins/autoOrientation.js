@@ -1,4 +1,4 @@
-import { addClass, hasClass, removeClass, setStyle } from '../utils'
+import { addClass, getSafeAreaInsets, hasClass, removeClass, setStyle } from '../utils'
 
 export default function autoOrientation(art) {
   const {
@@ -12,12 +12,15 @@ export default function autoOrientation(art) {
   let fsLocked = false
 
   function applyWebRotate() {
+    const insets = getSafeAreaInsets()
     const viewWidth = document.documentElement.clientWidth
     const viewHeight = document.documentElement.clientHeight
-    setStyle($player, 'width', `${viewHeight}px`)
-    setStyle($player, 'height', `${viewWidth}px`)
+    const safeWidth = viewHeight - insets.top - insets.bottom
+    const safeHeight = viewWidth - insets.left - insets.right
+    setStyle($player, 'width', `${safeWidth}px`)
+    setStyle($player, 'height', `${safeHeight}px`)
     setStyle($player, 'transform-origin', '0 0')
-    setStyle($player, 'transform', `rotate(90deg) translate(0, -${viewWidth}px)`)
+    setStyle($player, 'transform', `rotate(90deg) translate(${insets.top}px, -${viewWidth - insets.right}px)`)
     addClass($player, WEB_CLASS)
     art.isRotate = true
     art.emit('resize')

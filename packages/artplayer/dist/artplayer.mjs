@@ -1,5 +1,5 @@
 /*!
- * artplayer.js v5.4.0
+ * artplayer.js v5.4.1
  * Github: https://github.com/zhw2590582/ArtPlayer
  * (c) 2017-2026 Harvey Zhao
  * Released under the MIT License.
@@ -157,7 +157,7 @@ function requireOptionValidator() {
 }
 var optionValidatorExports = requireOptionValidator();
 const validator = /* @__PURE__ */ getDefaultExportFromCjs(optionValidatorExports);
-const version$1 = "5.4.0";
+const version$1 = "5.4.1";
 const config$1 = {
   properties: [
     "audioTracks",
@@ -393,6 +393,20 @@ function getComposedPath(event) {
   }
   return path;
 }
+function getSafeAreaInsets() {
+  const div = document.createElement("div");
+  div.style.cssText = "position:fixed;top:env(safe-area-inset-top,0px);right:env(safe-area-inset-right,0px);bottom:env(safe-area-inset-bottom,0px);left:env(safe-area-inset-left,0px);pointer-events:none;visibility:hidden;";
+  document.body.appendChild(div);
+  const style2 = getComputedStyle(div);
+  const insets = {
+    top: Number.parseFloat(style2.top) || 0,
+    right: Number.parseFloat(style2.right) || 0,
+    bottom: Number.parseFloat(style2.bottom) || 0,
+    left: Number.parseFloat(style2.left) || 0
+  };
+  div.remove();
+  return insets;
+}
 class ArtPlayerError extends Error {
   constructor(message, context) {
     super(message);
@@ -598,6 +612,7 @@ const utils = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePropert
   getExt,
   getIcon,
   getRect,
+  getSafeAreaInsets,
   getStyle,
   has,
   hasClass,
@@ -3559,12 +3574,15 @@ function autoOrientation(art) {
   const FS_CLASS = "art-auto-orientation-fullscreen";
   let fsLocked = false;
   function applyWebRotate() {
+    const insets = getSafeAreaInsets();
     const viewWidth = document.documentElement.clientWidth;
     const viewHeight = document.documentElement.clientHeight;
-    setStyle($player, "width", `${viewHeight}px`);
-    setStyle($player, "height", `${viewWidth}px`);
+    const safeWidth = viewHeight - insets.top - insets.bottom;
+    const safeHeight = viewWidth - insets.left - insets.right;
+    setStyle($player, "width", `${safeWidth}px`);
+    setStyle($player, "height", `${safeHeight}px`);
     setStyle($player, "transform-origin", "0 0");
-    setStyle($player, "transform", `rotate(90deg) translate(0, -${viewWidth}px)`);
+    setStyle($player, "transform", `rotate(90deg) translate(${insets.top}px, -${viewWidth - insets.right}px)`);
     addClass($player, WEB_CLASS);
     art.isRotate = true;
     art.emit("resize");
