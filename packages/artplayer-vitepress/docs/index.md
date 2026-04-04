@@ -16,6 +16,10 @@ yarn add artplayer
 pnpm add artplayer
 ```
 
+```bash [bun]
+bun add artplayer
+```
+
 ```html [script]
 <script src="path/to/artplayer.js"></script>
 ```

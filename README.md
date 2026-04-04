@@ -63,6 +63,18 @@ Or install with `yarn`:
 $ yarn add artplayer
 ```
 
+Or install with `pnpm`:
+
+```bash
+$ pnpm add artplayer
+```
+
+Or install with `bun`:
+
+```bash
+$ bun add artplayer
+```
+
 ```js
 import Artplayer from 'artplayer'
 ```
